@@ -38,7 +38,7 @@ func main() {
 }
 
 func initRouter(engine *gin.Engine)  {
-    engine.POST("/v1/terminal/:id", HandleExecNodeShell)
+    engine.POST("/v1/terminal", HandleExecNodeShell)
     engine.GET("/v1/sockjs/*any", func(context *gin.Context) {
         handler := CreateAttachHandler("/v1/sockjs")
         handler.ServeHTTP(context.Writer, context.Request)

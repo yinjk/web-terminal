@@ -1,13 +1,64 @@
-<!DOCTYPE html>
 <html>
-<head>
-	<title>WEB SHELL</title>
-</head>
-<script src="js/anime.min.js"></script>
-<script src="js/love.js"></script>
-<body>
-<canvas class="fireworks" width="0" height="0"></canvas>
-<h2>欢迎使用WEB-SHELL程序！</h2>
-</body>
-<script src="js/fireworks.js"></script>
+  <head>
+    <title>SSH Terminal</title>
+    <link rel="stylesheet" href="./js/xterm.css" />
+    <script src="./js/xterm.js"></script>
+    <script src="./js/fit.js"></script>
+    <script src="./js/socket.io.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        var terminalContainer = document.getElementById('terminal-container');
+        var term = new Terminal({ cursorBlink: true });
+        Terminal.applyAddon(fit);
+        term.open(terminalContainer);
+        term.fit();
+
+        var socket = io.connect();
+        socket.on('connect', function() {
+          term.write('\r\n*** Connected to backend***\r\n');
+
+          // Browser -> Backend
+          term.on('data', function(data) {
+            socket.emit('data', data);
+          });
+
+          // Backend -> Browser
+          socket.on('data', function(data) {
+            term.write(data);
+          });
+
+          socket.on('disconnect', function() {
+            term.write('\r\n*** Disconnected from backend***\r\n');
+          });
+        });
+      }, false);
+    </script>
+    <style>
+      body {
+        font-family: helvetica, sans-serif, arial;
+        font-size: 1em;
+        color: #111;
+      }
+      h1 {
+        text-align: center;
+      }
+      #terminal-container {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        padding: 2px;
+      }
+      #terminal-container .terminal {
+        background-color: #111;
+        color: #fafafa;
+        padding: 2px;
+      }
+      #terminal-container .terminal:focus .terminal-cursor {
+        background-color: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="terminal-container"></div>
+  </body>
 </html>

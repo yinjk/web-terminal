@@ -6,10 +6,10 @@
 package main
 
 import (
+    "fmt"
     "golang.org/x/crypto/ssh"
     "net"
     "time"
-    "fmt"
 )
 
 func sshConnect(user string, password string, host string, port int) (*ssh.Session, error) {

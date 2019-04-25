@@ -10,11 +10,11 @@ import (
     "net/http"
     "sync"
 
-    "gopkg.in/igm/sockjs-go.v2/sockjs"
     "golang.org/x/crypto/ssh"
+    "gopkg.in/igm/sockjs-go.v2/sockjs"
 )
 
-const END_OF_TRANSMISSION = "\u0004"
+const EndOfTransmission = "\u0004"
 
 // TerminalSize represents the width and height of a terminal.
 type TerminalSize struct {
@@ -74,12 +74,12 @@ func (t TerminalSession) Read(p []byte) (int, error) {
     m, err := t.sockJSSession.Recv()
     if err != nil {
         // Send terminated signal to process to avoid resource leak
-        return copy(p, END_OF_TRANSMISSION), err
+        return copy(p, EndOfTransmission), err
     }
 
     var msg TerminalMessage
     if err := json.Unmarshal([]byte(m), &msg); err != nil {
-        return copy(p, END_OF_TRANSMISSION), err
+        return copy(p, EndOfTransmission), err
     }
 
     switch msg.Op {
@@ -89,7 +89,7 @@ func (t TerminalSession) Read(p []byte) (int, error) {
         t.sizeChan <- TerminalSize{Width: msg.Cols, Height: msg.Rows}
         return 0, nil
     default:
-        return copy(p, END_OF_TRANSMISSION), fmt.Errorf("unknown message type '%s'", msg.Op)
+        return copy(p, EndOfTransmission), fmt.Errorf("unknown message type '%s'", msg.Op)
     }
 }
 

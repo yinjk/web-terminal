@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @author inori
  * @create 2019-03-18 15:42
  */
@@ -29,8 +29,8 @@ type Host struct {
  */
 func HandleExecNodeShell(context *gin.Context) {
     var host Host
-    context.BindJSON(&host)
-    if host.Ip == "" || host.Username == "" || host.Password == "" {
+    err := context.BindJSON(&host)
+    if err != nil || host.Ip == "" || host.Username == "" || host.Password == "" {
         context.JSON(http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
         return
     }

@@ -6,11 +6,11 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "time"
-    "net/http"
     "flag"
     "fmt"
+    "github.com/gin-gonic/gin"
+    "net/http"
+    "time"
 )
 
 func main() {

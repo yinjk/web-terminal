@@ -11,6 +11,7 @@ import (
     "github.com/gin-gonic/gin"
     "net/http"
     "time"
+    "web-terminal/internal"
 )
 
 func main() {
@@ -38,17 +39,18 @@ func main() {
 }
 
 func initRouter(engine *gin.Engine)  {
-    engine.POST("/v1/terminal", HandleExecNodeShell)
+    engine.GET("/hello", internal.HelloWord)
+    engine.POST("/v1/terminal", internal.HandleExecNodeShell)
     engine.GET("/v1/sockjs/*any", func(context *gin.Context) {
-        handler := CreateAttachHandler("/v1/sockjs")
+        handler := internal.CreateAttachHandler("/v1/sockjs")
         handler.ServeHTTP(context.Writer, context.Request)
     })
     engine.POST("/v1/sockjs/*any", func(context *gin.Context) {
-        handler := CreateAttachHandler("/v1/sockjs")
+        handler := internal.CreateAttachHandler("/v1/sockjs")
         handler.ServeHTTP(context.Writer, context.Request)
     })
     engine.OPTIONS("/v1/sockjs/*any", func(context *gin.Context) {
-        handler := CreateAttachHandler("/v1/sockjs")
+        handler := internal.CreateAttachHandler("/v1/sockjs")
         handler.ServeHTTP(context.Writer, context.Request)
     })
 }

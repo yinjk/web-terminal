@@ -3,7 +3,7 @@
  * @author inori
  * @create 2019-04-12 15:39
  */
-package main
+package internal
 
 import (
     "fmt"

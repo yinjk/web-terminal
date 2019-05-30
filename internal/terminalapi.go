@@ -3,7 +3,7 @@
  * @author inori
  * @create 2019-03-18 15:42
  */
-package main
+package internal
 
 import (
     "github.com/gin-gonic/gin"
@@ -13,6 +13,7 @@ import (
 type TerminalResponse struct {
     Id string `json:"id"`
 }
+
 type Host struct {
     Ip       string `json:"ip"`
     Username string `json:"username"`
@@ -45,7 +46,7 @@ func HandleExecNodeShell(context *gin.Context) {
     terminalSessions.Set(sessionId, TerminalSession{
         id:       sessionId,
         bound:    make(chan error),
-        sizeChan: make(chan TerminalSize),
+        sizeChan: make(chan *TerminalSize),
     })
 
     go WaitForNodeTerminal(host.Ip, host.Username, host.Port, host.Password, sessionId)

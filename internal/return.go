@@ -3,7 +3,7 @@
  * @author inori
  * @create 2019-04-12 15:47
  */
-package main
+package internal
 
 import (
     "github.com/gin-gonic/gin"
